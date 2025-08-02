@@ -1,0 +1,1328 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portal MTs - Sistem Informasi Madrasah</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #333;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* Header */
+        .header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 30px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        .header h1 {
+            color: #4a5568;
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            color: #718096;
+            font-size: 1.1rem;
+        }
+
+        /* Login Form */
+        .login-container {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 40px;
+            max-width: 400px;
+            margin: 0 auto;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        }
+
+        .login-form h2 {
+            text-align: center;
+            margin-bottom: 30px;
+            color: #4a5568;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #4a5568;
+            font-weight: 500;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .btn {
+            width: 100%;
+            padding: 12px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* Dashboard */
+        .dashboard {
+            display: none;
+        }
+
+        .dashboard-header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 30px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .user-info h3 {
+            color: #4a5568;
+            margin-bottom: 5px;
+        }
+
+        .user-info p {
+            color: #718096;
+        }
+
+        .logout-btn {
+            background: #e53e3e;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 500;
+        }
+
+        .logout-btn:hover {
+            background: #c53030;
+        }
+
+        /* Navigation Tabs */
+        .nav-tabs {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 30px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        }
+
+        .nav-tabs ul {
+            list-style: none;
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .nav-tabs li {
+            flex: 1;
+        }
+
+        .nav-tabs button {
+            width: 100%;
+            padding: 12px 20px;
+            background: #f7fafc;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s;
+        }
+
+        .nav-tabs button.active {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-color: #667eea;
+        }
+
+        .nav-tabs button:hover:not(.active) {
+            background: #edf2f7;
+            border-color: #cbd5e0;
+        }
+
+        /* Content Sections */
+        .content-section {
+            display: none;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        }
+
+        .content-section.active {
+            display: block;
+        }
+
+        .content-section h3 {
+            color: #4a5568;
+            margin-bottom: 20px;
+            font-size: 1.5rem;
+        }
+
+        /* Cards */
+        .card {
+            background: #f7fafc;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-left: 4px solid #667eea;
+        }
+
+        .card h4 {
+            color: #4a5568;
+            margin-bottom: 10px;
+        }
+
+        .card p {
+            color: #718096;
+            line-height: 1.6;
+        }
+
+        /* Tables */
+        .table-container {
+            overflow-x: auto;
+            margin-top: 20px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        th {
+            background: #f7fafc;
+            font-weight: 600;
+            color: #4a5568;
+        }
+
+        tr:hover {
+            background: #f7fafc;
+        }
+
+        /* Loading */
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: #718096;
+        }
+
+        .loading .spinner {
+            font-size: 2rem;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Alert */
+        .alert {
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+        .alert-success {
+            background: #c6f6d5;
+            color: #22543d;
+            border: 1px solid #9ae6b4;
+        }
+
+        .alert-error {
+            background: #fed7d7;
+            color: #742a2a;
+            border: 1px solid #fc8181;
+        }
+
+        .alert-info {
+            background: #bee3f8;
+            color: #2a4365;
+            border: 1px solid #90cdf4;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .container {
+                padding: 10px;
+            }
+
+            .header h1 {
+                font-size: 2rem;
+            }
+
+            .login-container {
+                padding: 30px 20px;
+            }
+
+            .dashboard-header {
+                flex-direction: column;
+                gap: 15px;
+                text-align: center;
+            }
+
+            .nav-tabs ul {
+                flex-direction: column;
+            }
+
+            .nav-tabs button {
+                margin-bottom: 5px;
+            }
+        }
+
+        /* Demo Credentials */
+        .demo-credentials {
+            background: #e6fffa;
+            border: 1px solid #81e6d9;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 20px;
+        }
+
+        .demo-credentials h4 {
+            color: #234e52;
+            margin-bottom: 10px;
+        }
+
+        .demo-credentials p {
+            color: #285e61;
+            margin-bottom: 5px;
+            font-size: 14px;
+        }
+
+        /* Message & Forum Styles */
+        .message-form {
+            background: #f7fafc;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .message-form textarea {
+            width: 100%;
+            min-height: 100px;
+            padding: 12px;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            font-family: inherit;
+            font-size: 14px;
+            resize: vertical;
+        }
+
+        .message-form textarea:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .message-form .form-row {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+            align-items: center;
+        }
+
+        .message-form select {
+            padding: 8px 12px;
+            border: 2px solid #e2e8f0;
+            border-radius: 6px;
+            font-size: 14px;
+        }
+
+        .send-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 500;
+            font-size: 14px;
+        }
+
+        .send-btn:hover {
+            transform: translateY(-1px);
+        }
+
+        .send-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .messages-list {
+            max-height: 400px;
+            overflow-y: auto;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 15px;
+            background: white;
+        }
+
+        .message-item {
+            background: #f7fafc;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 15px;
+            border-left: 4px solid #667eea;
+        }
+
+        .message-item.admin {
+            border-left-color: #e53e3e;
+            background: #fff5f5;
+        }
+
+        .message-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+
+        .message-sender {
+            font-weight: 600;
+            color: #4a5568;
+        }
+
+        .message-time {
+            font-size: 12px;
+            color: #718096;
+        }
+
+        .message-text {
+            color: #2d3748;
+            line-height: 1.5;
+        }
+
+        .forum-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 2rem;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .stat-label {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+
+        .online-users {
+            background: #e6fffa;
+            border: 1px solid #81e6d9;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 20px;
+        }
+
+        .online-users h4 {
+            color: #234e52;
+            margin-bottom: 10px;
+        }
+
+        .user-badge {
+            display: inline-block;
+            background: #667eea;
+            color: white;
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 12px;
+            margin: 2px;
+        }
+
+        .user-badge.admin {
+            background: #e53e3e;
+        }
+
+        @media (max-width: 768px) {
+            .message-form .form-row {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .message-form select {
+                margin-bottom: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <h1>🎓 Portal MTs</h1>
+            <p>Sistem Informasi Madrasah Tsanawiyah</p>
+        </div>
+
+        <!-- Login Section -->
+        <div id="loginSection" class="login-container">
+            <form class="login-form" id="loginForm">
+                <h2>🔐 Login Portal</h2>
+                
+                <!-- Demo Credentials -->
+                <div class="demo-credentials">
+                    <h4>ℹ️ Akun Demo:</h4>
+                    <p><strong>Admin:</strong> admin@mts.edu / admin123</p>
+                    <p><strong>Siswa:</strong> ahmad@mts.edu / siswa123</p>
+                    <p><strong>Siswa:</strong> siti@mts.edu / siswa123</p>
+                </div>
+
+                <div class="form-group">
+                    <label for="email">📧 Email</label>
+                    <input type="email" id="email" name="email" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="password">🔒 Password</label>
+                    <input type="password" id="password" name="password" required>
+                </div>
+
+                <button type="submit" class="btn" id="loginBtn">
+                    🚀 Masuk
+                </button>
+            </form>
+        </div>
+
+        <!-- Dashboard Section -->
+        <div id="dashboardSection" class="dashboard">
+            <!-- Dashboard Header -->
+            <div class="dashboard-header">
+                <div class="user-info">
+                    <h3 id="userName">Selamat datang!</h3>
+                    <p id="userRole">Loading...</p>
+                </div>
+                <button class="logout-btn" id="logoutBtn">
+                    🚪 Logout
+                </button>
+            </div>
+
+            <!-- Navigation Tabs -->
+            <div class="nav-tabs">
+                <ul>
+                    <li><button class="tab-btn active" data-tab="dashboard">📊 Dashboard</button></li>
+                    <li><button class="tab-btn" data-tab="grades">📈 Nilai</button></li>
+                    <li><button class="tab-btn" data-tab="materials">📚 Materi</button></li>
+                    <li><button class="tab-btn" data-tab="messages">💬 Pesan</button></li>
+                    <li><button class="tab-btn" data-tab="forum">🗣️ Forum</button></li>
+                    <li><button class="tab-btn" data-tab="profile">👤 Profil</button></li>
+                </ul>
+            </div>
+
+            <!-- Content Sections -->
+            <div id="dashboard" class="content-section active">
+                <h3>📊 Dashboard</h3>
+                <div id="dashboardContent">
+                    <div class="loading">
+                        <div class="spinner">⏳</div>
+                        <p>Memuat data...</p>
+                    </div>
+                </div>
+            </div>
+
+            <div id="grades" class="content-section">
+                <h3>📈 Nilai Siswa</h3>
+                <div id="gradesContent">
+                    <div class="loading">
+                        <div class="spinner">⏳</div>
+                        <p>Memuat nilai...</p>
+                    </div>
+                </div>
+            </div>
+
+            <div id="materials" class="content-section">
+                <h3>📚 Materi Pembelajaran</h3>
+                <div id="materialsContent">
+                    <div class="loading">
+                        <div class="spinner">⏳</div>
+                        <p>Memuat materi...</p>
+                    </div>
+                </div>
+            </div>
+
+            <div id="messages" class="content-section">
+                <h3>💬 Pesan ke Admin</h3>
+                <div id="messagesContent">
+                    <div class="loading">
+                        <div class="spinner">⏳</div>
+                        <p>Memuat pesan...</p>
+                    </div>
+                </div>
+            </div>
+
+            <div id="forum" class="content-section">
+                <h3>🗣️ Forum Diskusi</h3>
+                <div id="forumContent">
+                    <div class="loading">
+                        <div class="spinner">⏳</div>
+                        <p>Memuat forum...</p>
+                    </div>
+                </div>
+            </div>
+
+            <div id="profile" class="content-section">
+                <h3>👤 Profil Pengguna</h3>
+                <div id="profileContent">
+                    <div class="loading">
+                        <div class="spinner">⏳</div>
+                        <p>Memuat profil...</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // URL API ANDA
+        const API_URL = 'https://script.google.com/macros/s/AKfycbwzsv82fhaI6emdudp8KGkdo0yITg-yoxf0c8bAm23dfvnx8QHlB_uYb1Yr-_t9qZ99/exec';
+        
+        let currentUser = null;
+
+        // DOM Elements
+        const loginSection = document.getElementById('loginSection');
+        const dashboardSection = document.getElementById('dashboardSection');
+        const loginForm = document.getElementById('loginForm');
+        const loginBtn = document.getElementById('loginBtn');
+        const logoutBtn = document.getElementById('logoutBtn');
+        const userName = document.getElementById('userName');
+        const userRole = document.getElementById('userRole');
+
+        // Tab functionality
+        const tabBtns = document.querySelectorAll('.tab-btn');
+        const contentSections = document.querySelectorAll('.content-section');
+
+        tabBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                const tabName = btn.dataset.tab;
+                
+                // Update active tab
+                tabBtns.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                
+                // Update active content
+                contentSections.forEach(section => {
+                    section.classList.remove('active');
+                });
+                document.getElementById(tabName).classList.add('active');
+                
+                // Load content based on tab
+                loadTabContent(tabName);
+            });
+        });
+
+        // Login form handler
+        loginForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            
+            loginBtn.disabled = true;
+            loginBtn.innerHTML = '⏳ Memproses...';
+            
+            try {
+                const response = await fetch(`${API_URL}?action=login&email=${encodeURIComponent(email)}&password=${encodeURIComponent(password)}`);
+                const data = await response.json();
+                
+                if (data.success) {
+                    currentUser = data.user;
+                    showDashboard();
+                } else {
+                    showAlert('error', data.error || 'Login gagal');
+                }
+            } catch (error) {
+                console.error('Login error:', error);
+                showAlert('error', 'Terjadi kesalahan saat login. Pastikan koneksi internet aktif.');
+            }
+            
+            loginBtn.disabled = false;
+            loginBtn.innerHTML = '🚀 Masuk';
+        });
+
+        // Logout handler
+        logoutBtn.addEventListener('click', () => {
+            currentUser = null;
+            showLogin();
+        });
+
+        // Show dashboard
+        function showDashboard() {
+            loginSection.style.display = 'none';
+            dashboardSection.style.display = 'block';
+            
+            userName.textContent = `Selamat datang, ${currentUser.name}!`;
+            userRole.textContent = `Role: ${currentUser.role.toUpperCase()}`;
+            
+            // Load initial dashboard content
+            loadTabContent('dashboard');
+        }
+
+        // Show login
+        function showLogin() {
+            loginSection.style.display = 'block';
+            dashboardSection.style.display = 'none';
+            
+            // Reset form
+            loginForm.reset();
+        }
+
+        // Load tab content
+        async function loadTabContent(tabName) {
+            const contentDiv = document.getElementById(`${tabName}Content`);
+            
+            switch(tabName) {
+                case 'dashboard':
+                    await loadDashboard(contentDiv);
+                    break;
+                case 'grades':
+                    await loadGrades(contentDiv);
+                    break;
+                case 'materials':
+                    await loadMaterials(contentDiv);
+                    break;
+                case 'messages':
+                    await loadMessages(contentDiv);
+                    break;
+                case 'forum':
+                    await loadForum(contentDiv);
+                    break;
+                case 'profile':
+                    await loadProfile(contentDiv);
+                    break;
+            }
+        }
+
+        // Load dashboard content
+        async function loadDashboard(contentDiv) {
+            contentDiv.innerHTML = `
+                <div class="card">
+                    <h4>👤 Informasi Akun</h4>
+                    <p><strong>Nama:</strong> ${currentUser.name}</p>
+                    <p><strong>Email:</strong> ${currentUser.email}</p>
+                    <p><strong>Role:</strong> ${currentUser.role.toUpperCase()}</p>
+                    <p><strong>Status:</strong> ${currentUser.status.toUpperCase()}</p>
+                </div>
+            `;
+
+            if (currentUser.role === 'siswa' && currentUser.studentData) {
+                contentDiv.innerHTML += `
+                    <div class="card">
+                        <h4>🆔 Data Siswa</h4>
+                        <p><strong>NISN:</strong> ${currentUser.studentData.nisn}</p>
+                        <p><strong>Kelas:</strong> ${currentUser.studentData.kelas}</p>
+                    </div>
+                `;
+            }
+
+            contentDiv.innerHTML += `
+                <div class="card">
+                    <h4>ℹ️ Tentang Portal</h4>
+                    <p>Portal MTs adalah sistem informasi terintegrasi untuk mengelola data akademik madrasah. Sistem ini menyediakan akses mudah untuk melihat nilai, materi pembelajaran, dan informasi penting lainnya.</p>
+                </div>
+            `;
+        }
+
+        // Load grades
+        async function loadGrades(contentDiv) {
+            if (currentUser.role !== 'siswa' || !currentUser.studentData) {
+                contentDiv.innerHTML = `
+                    <div class="alert alert-info">
+                        ℹ️ Fitur nilai hanya tersedia untuk siswa.
+                    </div>
+                `;
+                return;
+            }
+
+            contentDiv.innerHTML = `
+                <div class="loading">
+                    <div class="spinner">⏳</div>
+                    <p>Memuat nilai...</p>
+                </div>
+            `;
+
+            try {
+                const response = await fetch(`${API_URL}?action=getGrades&nisn=${currentUser.studentData.nisn}`);
+                const data = await response.json();
+
+                if (data.success && data.grades.length > 0) {
+                    let tableHTML = `
+                        <div class="table-container">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Mata Pelajaran</th>
+                                        <th>Nilai</th>
+                                        <th>Grade</th>
+                                        <th>Tanggal</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                    `;
+
+                    data.grades.forEach(grade => {
+                        tableHTML += `
+                            <tr>
+                                <td>${grade.mata_pelajaran}</td>
+                                <td>${grade.nilai}</td>
+                                <td><strong>${grade.grade}</strong></td>
+                                <td>${grade.tanggal}</td>
+                            </tr>
+                        `;
+                    });
+
+                    tableHTML += `
+                                </tbody>
+                            </table>
+                        </div>
+                    `;
+
+                    contentDiv.innerHTML = tableHTML;
+                } else {
+                    contentDiv.innerHTML = `
+                        <div class="alert alert-info">
+                            ℹ️ Belum ada data nilai.
+                        </div>
+                    `;
+                }
+            } catch (error) {
+                console.error('Error loading grades:', error);
+                contentDiv.innerHTML = `
+                    <div class="alert alert-error">
+                        ⚠️ Gagal memuat data nilai.
+                    </div>
+                `;
+            }
+        }
+
+        // Load materials
+        async function loadMaterials(contentDiv) {
+            contentDiv.innerHTML = `
+                <div class="loading">
+                    <div class="spinner">⏳</div>
+                    <p>Memuat materi...</p>
+                </div>
+            `;
+
+            try {
+                const kelas = currentUser.studentData ? currentUser.studentData.kelas : '';
+                const response = await fetch(`${API_URL}?action=getMaterials&kelas=${kelas}`);
+                const data = await response.json();
+
+                if (data.success && data.materials.length > 0) {
+                    let materialsHTML = '';
+
+                    data.materials.forEach(material => {
+                        materialsHTML += `
+                            <div class="card">
+                                <h4>📄 ${material.judul}</h4>
+                                <p><strong>Kategori:</strong> ${material.kategori}</p>
+                                <p><strong>Kelas:</strong> ${material.kelas}</p>
+                                <p><strong>Upload:</strong> ${material.upload_date}</p>
+                                <p><a href="${material.file_url}" target="_blank" style="color: #667eea; text-decoration: none;">
+                                    📥 Download Materi
+                                </a></p>
+                            </div>
+                        `;
+                    });
+
+                    contentDiv.innerHTML = materialsHTML;
+                } else {
+                    contentDiv.innerHTML = `
+                        <div class="alert alert-info">
+                            ℹ️ Belum ada materi tersedia.
+                        </div>
+                    `;
+                }
+            } catch (error) {
+                console.error('Error loading materials:', error);
+                contentDiv.innerHTML = `
+                    <div class="alert alert-error">
+                        ⚠️ Gagal memuat data materi.
+                    </div>
+                `;
+            }
+        }
+
+        // Load messages
+        async function loadMessages(contentDiv) {
+            if (currentUser.role !== 'siswa') {
+                // Admin view - show all messages from students
+                contentDiv.innerHTML = `
+                    <div class="loading">
+                        <div class="spinner">⏳</div>
+                        <p>Memuat pesan...</p>
+                    </div>
+                `;
+
+                try {
+                    const response = await fetch(`${API_URL}?action=getMessages`);
+                    const data = await response.json();
+
+                    if (data.success && data.messages.length > 0) {
+                        let messagesHTML = `
+                            <div class="alert alert-info">
+                                📬 Pesan dari Siswa (${data.messages.length} pesan)
+                            </div>
+                            <div class="messages-list">
+                        `;
+
+                        data.messages.forEach(message => {
+                            messagesHTML += `
+                                <div class="message-item">
+                                    <div class="message-header">
+                                        <span class="message-sender">👨‍🎓 ${message.sender_name}</span>
+                                        <span class="message-time">${message.timestamp}</span>
+                                    </div>
+                                    <div class="message-text">${message.message}</div>
+                                    ${message.priority ? `<div style="color: #e53e3e; font-size: 12px; margin-top: 5px;">⚠️ ${message.priority.toUpperCase()}</div>` : ''}
+                                </div>
+                            `;
+                        });
+
+                        messagesHTML += '</div>';
+                        contentDiv.innerHTML = messagesHTML;
+                    } else {
+                        contentDiv.innerHTML = `
+                            <div class="alert alert-info">
+                                📭 Belum ada pesan dari siswa.
+                            </div>
+                        `;
+                    }
+                } catch (error) {
+                    console.error('Error loading messages:', error);
+                    contentDiv.innerHTML = `
+                        <div class="alert alert-error">
+                            ⚠️ Gagal memuat pesan.
+                        </div>
+                    `;
+                }
+            } else {
+                // Student view - form to send message to admin
+                contentDiv.innerHTML = `
+                    <div class="message-form">
+                        <h4>📝 Kirim Pesan ke Admin</h4>
+                        <textarea id="messageText" placeholder="Tulis pesan Anda di sini..."></textarea>
+                        <div class="form-row">
+                            <select id="messagePriority">
+                                <option value="">Prioritas Normal</option>
+                                <option value="penting">⚠️ Penting</option>
+                                <option value="urgent">🚨 Urgent</option>
+                            </select>
+                            <button class="send-btn" id="sendMessageBtn">📤 Kirim Pesan</button>
+                        </div>
+                    </div>
+                    <div id="myMessages">
+                        <div class="loading">
+                            <div class="spinner">⏳</div>
+                            <p>Memuat riwayat pesan...</p>
+                        </div>
+                    </div>
+                `;
+
+                // Add event listener for send button
+                document.getElementById('sendMessageBtn').addEventListener('click', sendMessage);
+
+                // Load student's message history
+                loadMyMessages();
+            }
+        }
+
+        // Send message function
+        async function sendMessage() {
+            const messageText = document.getElementById('messageText').value.trim();
+            const priority = document.getElementById('messagePriority').value;
+            const sendBtn = document.getElementById('sendMessageBtn');
+
+            if (!messageText) {
+                showAlert('error', 'Pesan tidak boleh kosong!');
+                return;
+            }
+
+            sendBtn.disabled = true;
+            sendBtn.innerHTML = '⏳ Mengirim...';
+
+            try {
+                const response = await fetch(`${API_URL}?action=sendMessage`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        sender_email: currentUser.email,
+                        sender_name: currentUser.name,
+                        message: messageText,
+                        priority: priority,
+                        timestamp: new Date().toLocaleString('id-ID')
+                    })
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    document.getElementById('messageText').value = '';
+                    document.getElementById('messagePriority').value = '';
+                    showAlert('success', '✅ Pesan berhasil dikirim!');
+                    loadMyMessages(); // Refresh message history
+                } else {
+                    showAlert('error', data.error || 'Gagal mengirim pesan');
+                }
+            } catch (error) {
+                console.error('Error sending message:', error);
+                showAlert('error', 'Terjadi kesalahan saat mengirim pesan');
+            }
+
+            sendBtn.disabled = false;
+            sendBtn.innerHTML = '📤 Kirim Pesan';
+        }
+
+        // Load student's message history
+        async function loadMyMessages() {
+            try {
+                const response = await fetch(`${API_URL}?action=getMyMessages&email=${currentUser.email}`);
+                const data = await response.json();
+
+                const myMessagesDiv = document.getElementById('myMessages');
+
+                if (data.success && data.messages.length > 0) {
+                    let messagesHTML = `
+                        <h4>📋 Riwayat Pesan Anda</h4>
+                        <div class="messages-list">
+                    `;
+
+                    data.messages.forEach(message => {
+                        messagesHTML += `
+                            <div class="message-item">
+                                <div class="message-header">
+                                    <span class="message-sender">📤 Anda</span>
+                                    <span class="message-time">${message.timestamp}</span>
+                                </div>
+                                <div class="message-text">${message.message}</div>
+                                ${message.priority ? `<div style="color: #e53e3e; font-size: 12px; margin-top: 5px;">⚠️ ${message.priority.toUpperCase()}</div>` : ''}
+                            </div>
+                        `;
+                    });
+
+                    messagesHTML += '</div>';
+                    myMessagesDiv.innerHTML = messagesHTML;
+                } else {
+                    myMessagesDiv.innerHTML = `
+                        <div class="alert alert-info">
+                            📭 Anda belum mengirim pesan.
+                        </div>
+                    `;
+                }
+            } catch (error) {
+                console.error('Error loading my messages:', error);
+                document.getElementById('myMessages').innerHTML = `
+                    <div class="alert alert-error">
+                        ⚠️ Gagal memuat riwayat pesan.
+                    </div>
+                `;
+            }
+        }
+
+        // Load forum
+        async function loadForum(contentDiv) {
+            contentDiv.innerHTML = `
+                <div class="loading">
+                    <div class="spinner">⏳</div>
+                    <p>Memuat forum...</p>
+                </div>
+            `;
+
+            try {
+                // Load forum stats and online users
+                const [forumResponse, usersResponse] = await Promise.all([
+                    fetch(`${API_URL}?action=getForumMessages`),
+                    fetch(`${API_URL}?action=getOnlineUsers`)
+                ]);
+
+                const forumData = await forumResponse.json();
+                const usersData = await usersResponse.json();
+
+                let forumHTML = `
+                    <div class="forum-stats">
+                        <div class="stat-card">
+                            <div class="stat-number">${forumData.success ? forumData.messages.length : 0}</div>
+                            <div class="stat-label">Total Pesan</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-number">${usersData.success ? usersData.users.length : 0}</div>
+                            <div class="stat-label">Pengguna Aktif</div>
+                        </div>
+                    </div>
+                `;
+
+                // Online users
+                if (usersData.success && usersData.users.length > 0) {
+                    forumHTML += `
+                        <div class="online-users">
+                            <h4>👥 Pengguna Online</h4>
+                    `;
+                    usersData.users.forEach(user => {
+                        forumHTML += `<span class="user-badge ${user.role}">${user.name}</span>`;
+                    });
+                    forumHTML += '</div>';
+                }
+
+                // Message form
+                forumHTML += `
+                    <div class="message-form">
+                        <h4>💬 Tulis Pesan Forum</h4>
+                        <textarea id="forumMessageText" placeholder="Bagikan pemikiran Anda..."></textarea>
+                        <div class="form-row">
+                            <button class="send-btn" id="sendForumMessageBtn">🚀 Kirim ke Forum</button>
+                        </div>
+                    </div>
+                `;
+
+                // Forum messages
+                if (forumData.success && forumData.messages.length > 0) {
+                    forumHTML += `
+                        <h4>💬 Diskusi Forum</h4>
+                        <div class="messages-list">
+                    `;
+
+                    forumData.messages.forEach(message => {
+                        forumHTML += `
+                            <div class="message-item ${message.role}">
+                                <div class="message-header">
+                                    <span class="message-sender">
+                                        ${message.role === 'admin' ? '👨‍💼' : '👨‍🎓'} ${message.sender_name}
+                                        <span style="font-size: 10px; background: ${message.role === 'admin' ? '#e53e3e' : '#667eea'}; color: white; padding: 2px 6px; border-radius: 8px; margin-left: 5px;">
+                                            ${message.role.toUpperCase()}
+                                        </span>
+                                    </span>
+                                    <span class="message-time">${message.timestamp}</span>
+                                </div>
+                                <div class="message-text">${message.message}</div>
+                            </div>
+                        `;
+                    });
+
+                    forumHTML += '</div>';
+                } else {
+                    forumHTML += `
+                        <div class="alert alert-info">
+                            💬 Belum ada diskusi di forum. Jadilah yang pertama!
+                        </div>
+                    `;
+                }
+
+                contentDiv.innerHTML = forumHTML;
+
+                // Add event listener for forum message
+                document.getElementById('sendForumMessageBtn').addEventListener('click', sendForumMessage);
+
+            } catch (error) {
+                console.error('Error loading forum:', error);
+                contentDiv.innerHTML = `
+                    <div class="alert alert-error">
+                        ⚠️ Gagal memuat forum.
+                    </div>
+                `;
+            }
+        }
+
+        // Send forum message
+        async function sendForumMessage() {
+            const messageText = document.getElementById('forumMessageText').value.trim();
+            const sendBtn = document.getElementById('sendForumMessageBtn');
+
+            if (!messageText) {
+                showAlert('error', 'Pesan tidak boleh kosong!');
+                return;
+            }
+
+            sendBtn.disabled = true;
+            sendBtn.innerHTML = '⏳ Mengirim...';
+
+            try {
+                const response = await fetch(`${API_URL}?action=sendForumMessage`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        sender_email: currentUser.email,
+                        sender_name: currentUser.name,
+                        role: currentUser.role,
+                        message: messageText,
+                        timestamp: new Date().toLocaleString('id-ID')
+                    })
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    document.getElementById('forumMessageText').value = '';
+                    showAlert('success', '✅ Pesan berhasil dikirim ke forum!');
+                    // Reload forum to show new message
+                    loadTabContent('forum');
+                } else {
+                    showAlert('error', data.error || 'Gagal mengirim pesan');
+                }
+            } catch (error) {
+                console.error('Error sending forum message:', error);
+                showAlert('error', 'Terjadi kesalahan saat mengirim pesan');
+            }
+
+            sendBtn.disabled = false;
+            sendBtn.innerHTML = '🚀 Kirim ke Forum';
+        }
+
+        // Load profile
+        async function loadProfile(contentDiv) {
+            if (currentUser.role === 'siswa' && currentUser.studentData) {
+                try {
+                    const response = await fetch(`${API_URL}?action=getStudentData&nisn=${currentUser.studentData.nisn}`);
+                    const data = await response.json();
+
+                    if (data.success) {
+                        const student = data.student;
+                        contentDiv.innerHTML = `
+                            <div class="card">
+                                <h4>👤 Data Lengkap Siswa</h4>
+                                <p><strong>NISN:</strong> ${student.nisn}</p>
+                                <p><strong>Nama:</strong> ${student.nama}</p>
+                                <p><strong>Kelas:</strong> ${student.kelas}</p>
+                                <p><strong>Email:</strong> ${student.email}</p>
+                                <p><strong>Alamat:</strong> ${student.alamat}</p>
+                                <p><strong>Telepon:</strong> ${student.telepon}</p>
+                            </div>
+                        `;
+                    } else {
+                        contentDiv.innerHTML = `
+                            <div class="alert alert-error">
+                                ⚠️ Gagal memuat data profil.
+                            </div>
+                        `;
+                    }
+                } catch (error) {
+                    console.error('Error loading profile:', error);
+                    contentDiv.innerHTML = `
+                        <div class="alert alert-error">
+                            ⚠️ Gagal memuat data profil.
+                        </div>
+                    `;
+                }
+            } else {
+                contentDiv.innerHTML = `
+                    <div class="card">
+                        <h4>👤 Profil Pengguna</h4>
+                        <p><strong>Nama:</strong> ${currentUser.name}</p>
+                        <p><strong>Email:</strong> ${currentUser.email}</p>
+                        <p><strong>Role:</strong> ${currentUser.role.toUpperCase()}</p>
+                        <p><strong>Status:</strong> ${currentUser.status.toUpperCase()}</p>
+                    </div>
+                `;
+            }
+        }
+
+        // Show alert
+        function showAlert(type, message) {
+            const alertDiv = document.createElement('div');
+            alertDiv.className = `alert alert-${type}`;
+            alertDiv.innerHTML = `${type === 'error' ? '⚠️' : '✅'} ${message}`;
+            
+            const form = document.querySelector('.login-form');
+            form.insertBefore(alertDiv, form.firstChild);
+            
+            setTimeout(() => {
+                alertDiv.remove();
+            }, 5000);
+        }
+
+        // Test API connection on load
+        window.addEventListener('load', async () => {
+            try {
+                const response = await fetch(`${API_URL}?action=test`);
+                const data = await response.json();
+                
+                if (!data.success) {
+                    showAlert('error', 'Koneksi API bermasalah. Periksa URL API.');
+                }
+            } catch (error) {
+                console.error('API test failed:', error);
+                showAlert('error', 'Tidak dapat terhubung ke server. Pastikan koneksi internet aktif.');
+            }
+        });
+    </script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'968a6ebcd23b3e25',t:'MTc1NDEwNDc1NS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
